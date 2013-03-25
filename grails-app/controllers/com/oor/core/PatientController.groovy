@@ -40,7 +40,7 @@ class PatientController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'patient.label', default: 'Patient'), patientInstance.id])
-        redirect(action: "show", id: patientInstance.id)
+       redirect(action: "list")
     }
 
     def show(Long id) {
@@ -54,15 +54,19 @@ class PatientController {
         [patientInstance: patientInstance]
     }
 
-    def edit(Long id) {
-        def patientInstance = Patient.get(id)
+    def edit(Long id, Integer max) {
+		params.max = Math.min(max ?: 5, 100)
+		
+		def patientInstance = Patient.get(id)
+		def consultationInstanceList = Consultation.findAllByPatient(patientInstance, params)
+		
         if (!patientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'patient.label', default: 'Patient'), id])
             redirect(action: "list")
             return
         }
 
-        [patientInstance: patientInstance]
+        [patientInstance: patientInstance, consultationInstanceList: consultationInstanceList, consultationInstanceTotal: Consultation.countByPatient(patientInstance, params)]
     }
 
     def update(Long id, Long version) {
@@ -78,20 +82,20 @@ class PatientController {
                 patientInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'patient.label', default: 'Patient')] as Object[],
                           "Another user has updated this Patient while you were editing")
-                render(view: "edit", model: [patientInstance: patientInstance])
+				render( contentType:'text/plain', text: '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button>Another user has updated this Patient while you were editing</div>')
+				
                 return
             }
         }
 
         patientInstance.properties = params
 
-        if (!patientInstance.save(flush: true)) {
-            render(view: "edit", model: [patientInstance: patientInstance])
-            return
+        if (patientInstance.save(flush: true)) {
+			render(template:'formremote', 
+				model: [patientInstance: patientInstance, isUpdated: true])
+        } else {
+			render(ContentType:'text/plain', text: patientInstance.errors)
         }
-
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'patient.label', default: 'Patient'), patientInstance.id])
-        redirect(action: "show", id: patientInstance.id)
     }
 
     def delete(Long id) {

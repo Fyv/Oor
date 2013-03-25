@@ -4,7 +4,8 @@ public enum Civilite {
 
 	MONSIEUR("M."),
 	MADAME("Mme"), 
-	MLLE("Mlle")
+	MLLE("Mlle"), 
+	ENFANT("Enfant")
 	
 	private final String value;
 	
@@ -21,6 +22,6 @@ public enum Civilite {
 	 }
 
 	 static list(){
-	  [MONSIEUR, MADAME, MLLE]
+	  [MONSIEUR, MADAME, MLLE, ENFANT]
 	 }
 }

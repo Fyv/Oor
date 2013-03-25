@@ -10,10 +10,10 @@
 </head>
 <body>
 	<div class="row-fluid">
-		
+
 		<g:render template="leftMenu" />
 
-		<div class="span9">
+		<div class="span4">
 
 			<div class="page-header">
 				<h1>
@@ -36,14 +36,16 @@
 					</g:eachError>
 				</ul>
 			</g:hasErrors>
-			<g:form action="save">
+			<g:form action="save" class="form-horizontal">
 				<fieldset class="form">
 					<g:render template="form" />
 				</fieldset>
-				<fieldset class="buttons">
-					<g:submitButton name="create" class="save"
-						value="${message(code: 'default.button.create.label', default: 'Create')}" />
-				</fieldset>
+				<div class="form-actions">
+					<fieldset class="buttons">
+						<g:submitButton name="create" class="btn btn-primary save"
+							value="${message(code: 'default.button.create.label', default: 'Create')}" />
+					</fieldset>
+				</div>
 			</g:form>
 		</div>
 	</div>

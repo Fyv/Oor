@@ -26,3 +26,5 @@
 <g:javascript src="application.js" />
 <g:javascript src="jquery.js" />
 <g:javascript src="bootstrap.js" />
+<g:javascript library="prototype" />
+<g:javascript library="scriptaculous" />

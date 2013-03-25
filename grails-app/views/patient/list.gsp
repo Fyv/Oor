@@ -65,10 +65,12 @@
 							</td>
 							<td class="link">
 								<div class="btn-group">
-									<g:link class="btn" action="show" id="${patientInstance?.id}">
+									<g:link class="btn" action="edit" id="${patientInstance?.id}">
 										<i class="icon-search"></i>
 										<g:message code="default.button.show.label" default="Show" />
 									</g:link>
+									</div>
+									<%--
 									<button class="btn dropdown-toggle" data-toggle="dropdown">
 										<span class="caret"></span>
 									</button>
@@ -77,16 +79,16 @@
 												<i class="icon-edit"></i>
 												<g:message code="default.button.edit.label" default="Edit" />
 											</g:link></li>
-										<%--<li>
+										--%><%--<li>
 											<g:link type="submit" action="_action_delete" id="${patientInstance.id}">
 											<i class="icon-trash"></i>
 											<g:message code="default.button.delete.label" default="Delete" />
 											</g:link>
 										</li>
-									--%>
+									--%><%--
 									</ul>
 								</div>
-							</td>
+							--%></td>
 						</tr>
 					</g:each>
 				</tbody>

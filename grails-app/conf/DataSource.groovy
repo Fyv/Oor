@@ -34,11 +34,11 @@ environments {
 	}
 	production {
 		dataSource {
-			driverClassName = "com.mysql.jdbc.Driver"
-			dbCreate = "update"
-			url = "jdbc:mysql://osteoonrails.fyv.cloudbees.net:3306/oor"
-			username = "oor"
-			password = "beebop01"
+			driverClassName = "org.postgresql.Driver"
+//			dbCreate = "update"
+			url = "jdbc:postgresql://postgres-Osteoonrails.jelastic.dogado.eu/postgres"
+			username = "webadmin"
+			password = "JDFgUdmFs3"
 		}
 	}
 }

@@ -21,7 +21,9 @@ class Patient {
 	String medical
 	String chirurgical
 	String traumatisme
-	String famille
+//	String famille
+	String posturologie
+	String traitement
 	String naissance
 	String complementaire
 	Genre sexe
@@ -36,15 +38,18 @@ class Patient {
 	static belongsTo = [utilisateur:Utilisateur]
 	
 	static mapping = {
+		consultations cascade: 'all-delete-orphan'
 		profession type: 'text'
 		loisir type: 'text'
 		remarque type: 'text'
 		medical type: 'text'
 		chirurgical type: 'text'
 		traumatisme type: 'text'
-		famille type: 'text'
+//		famille type: 'text'
+		posturologie type: 'text'
 		naissance type: 'text'
 		complementaire type: 'text'
+		traitement type: 'text'
 	}
 	
     static constraints = {
@@ -61,10 +66,12 @@ class Patient {
 		dateCreated(unique:false, nullable:false, display:false)
 		lastUpdated(unique:false, nullable:true, display:false)
 		consultations(display:false)
+		posturologie(nullable:true)
+		traitement(nullable:true)
     }
 	
 	static List<Patient> findAllByUtilisateur(Utilisateur utilisateur, Map namedParams){
-		Patient.findAll("from Patient as p where p.utilisateur=? order by p.dateCreated",
+		Patient.findAll("from Patient as p where p.utilisateur=? order by p.dateCreated Asc",
 			[utilisateur], namedParams)
 	}
 	

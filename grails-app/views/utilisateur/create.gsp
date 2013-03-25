@@ -16,7 +16,7 @@
 		<div class="span9">
 			<div class="page-header">
 				<h1>
-					<g:message code="default.list.label" args="[entityName]" />
+					<g:message code="default.create.label" args="[entityName]" />
 				</h1>
 			</div>
 			<g:if test="${flash.message}">

@@ -49,8 +49,7 @@
 					</a>
 						<ul class="dropdown-menu">
 
-							<%--<li><g:link controller="utilisateur">Preferences </g:link></li>
-							--%>
+							<li><g:link url="[action:'preferences',controller:'utilisateur']">Preferences </g:link></li>
 							<li><g:link controller="logout">Déconnexion </g:link></li>
 						</ul></li>
 

@@ -109,3 +109,7 @@ grails.plugins.twitterbootstrap.fixtaglib = true
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.oor.security.Utilisateur'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.oor.security.UtilisateurRole'
 grails.plugins.springsecurity.authority.className = 'com.oor.security.Role'
+
+//changeslogssql
+grails.plugin.databasemigration.updateOnStart = true
+grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']

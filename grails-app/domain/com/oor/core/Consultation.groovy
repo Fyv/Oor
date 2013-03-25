@@ -26,6 +26,6 @@ class Consultation {
 	}
 	
 	static List<Consultation> findAllByPatient(Patient patient, Map namedParams){
-		Consultation.findAll("From Consultation as c where c.patient=? order by c.dateCreated", [patient], namedParams);
+		Consultation.findAll("From Consultation as c where c.patient=? order by c.dateCreated Desc", [patient], namedParams);
 	}
 }

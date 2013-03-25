@@ -1,7 +1,5 @@
 <%@ page import="com.oor.core.Consultation" %>
 
-
-
 <div class="fieldcontain ${hasErrors(bean: consultationInstance, field: 'motif', 'error')} required">
 	<label for="motif">
 		<g:message code="consultation.motif.label" default="Motif" />
@@ -15,7 +13,7 @@
 		<g:message code="consultation.doleance.label" default="Doleance" />
 		
 	</label>
-	<g:textField name="doleance" value="${consultationInstance?.doleance}"/>
+	<g:textArea name="doleance" value="${consultationInstance?.doleance}" rows="5" class="field span12"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: consultationInstance, field: 'traitement', 'error')} ">
@@ -23,8 +21,5 @@
 		<g:message code="consultation.traitement.label" default="Traitement" />
 		
 	</label>
-	<g:textField name="traitement" value="${consultationInstance?.traitement}"/>
+	<g:textArea name="traitement" value="${consultationInstance?.traitement}" rows="5" class="field span12"/>
 </div>
-
-<g:hiddenField name="patientId" value="${params["patientId"]}"/>
-
