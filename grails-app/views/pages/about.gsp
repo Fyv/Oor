@@ -28,18 +28,7 @@
 			</div>
 			<p class="muted"></p>
 			<ul>
-				<li><h4>test</h4>
-					<ul class="unstyled">
-						<li>bla</li>
-					</ul></li>
-				<li><h4>test</h4></li>
-				<li><h4>test</h4></li>
-				<li><h4>test</h4></li>
-				<li></li>
-				<li></li>
-				<li></li>
-				<li></li>
-
+				Osteo On Rails est encore en phase de beta test et en développement actif.
 			</ul>
 			<p></p>
 		</div>

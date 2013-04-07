@@ -13,6 +13,17 @@
 					<i class="icon-plus"></i>
 					<g:message code="default.create.label" args="[entityName]" />
 				</g:link></li>
+			<li class="nav-header">Recherche patient</li>
+			<li><g:form id="searchForm" class="form-search"
+					url="${[controller: 'patient', action:'search'] }"
+					name="searchForm" method="post" update="searchUpdate">
+					<div class="input-append">
+						<input type="text" name="searchValue" id="searchValue"
+							class="input-medium search-query">
+						<g:actionSubmit type="submit" action="search" class="btn"
+							value="Search"></g:actionSubmit>
+					</div>
+				</g:form></li>
 		</ul>
 	</div>
 </div>

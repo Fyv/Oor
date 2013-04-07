@@ -26,6 +26,7 @@ class Patient {
 	String traitement
 	String naissance
 	String complementaire
+	String grossesse
 	Genre sexe
 	Civilite civilite
 	
@@ -50,6 +51,7 @@ class Patient {
 		naissance type: 'text'
 		complementaire type: 'text'
 		traitement type: 'text'
+		grossesse type: 'text'
 	}
 	
     static constraints = {
@@ -68,6 +70,7 @@ class Patient {
 		consultations(display:false)
 		posturologie(nullable:true)
 		traitement(nullable:true)
+		grossesse(nullable:true)
     }
 	
 	static List<Patient> findAllByUtilisateur(Utilisateur utilisateur, Map namedParams){
@@ -75,4 +78,8 @@ class Patient {
 			[utilisateur], namedParams)
 	}
 	
+	static List<Patient> findAllLikeByUtilisateur(Utilisateur utilisateur, String searchValue, Map namedParams){
+		Patient.findAll("from Patient as p where (p.nom like :search or p.prenom like :search) And  p.utilisateur= :user  order by p.dateCreated Asc",
+						[search: searchValue, user: utilisateur], namedParams)
+	}
 }

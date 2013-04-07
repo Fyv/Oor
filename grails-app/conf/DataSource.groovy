@@ -35,10 +35,11 @@ environments {
 	production {
 		dataSource {
 			driverClassName = "org.postgresql.Driver"
-//			dbCreate = "update"
-			url = "jdbc:postgresql://postgres-Osteoonrails.jelastic.dogado.eu/postgres"
-			username = "webadmin"
-			password = "JDFgUdmFs3"
+			dbCreate = "update"
+//			url = "jdbc:postgresql://postgres-Osteoonrails.jelastic.dogado.eu/postgres"
+			url = "jdbc:postgresql://92.243.11.46/oor"
+			username = "postgres"
+			password = "beebop01"
 		}
 	}
 }

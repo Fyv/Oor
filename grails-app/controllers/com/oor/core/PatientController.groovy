@@ -1,5 +1,9 @@
 package com.oor.core
 
+import java.text.SimpleDateFormat;
+
+import grails.gorm.DetachedCriteria
+import grails.orm.PagedResultList
 import grails.plugins.springsecurity.Secured
 
 import org.springframework.dao.DataIntegrityViolationException
@@ -16,12 +20,45 @@ class PatientController {
     }
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 2, 100)
+        params.max = Math.min(max ?: 20, 100)
 		
 		def patientInstanceList = Patient.findAllByUtilisateur(springSecurityService.currentUser, params)
 		
         [patientInstanceList: patientInstanceList, patientInstanceTotal: Patient.countByUtilisateur(springSecurityService.currentUser, params)]
     }
+    
+	def search(Integer max, String searchValue) {
+		params.max = Math.min(max ?: 10, 100)
+		def patientInstanceList
+		def patientInstanceTotal
+		
+		switch (request.method) {
+			case 'GET':
+			[patientInstanceList: patientInstanceList, 
+					patientInstanceTotal: patientInstanceTotal]
+			break
+			
+			case 'POST':
+				def searchQuery = "%"+searchValue+"%"
+				def criteria = new DetachedCriteria(Patient)
+				def query = criteria.build {
+					or {
+						like("nom", searchQuery)
+						like("prenom", searchQuery)
+					}
+					eq("utilisateur", springSecurityService.currentUser)
+				}
+				patientInstanceList = query.list(params)
+				patientInstanceTotal = query.count()
+				
+//				render(template:'listpatients',
+//				model:
+				[patientInstanceList: patientInstanceList, 
+					patientInstanceTotal: patientInstanceTotal]
+//				)
+			break
+		}
+	}
 
     def create() {
         [patientInstance: new Patient(params)]
@@ -31,6 +68,7 @@ class PatientController {
         def patientInstance = new Patient(params)
 		
 		patientInstance.setDateCreated(new Date())
+		patientInstance.setDateNaissance(computeDate(params))
 		
 		assignUser(patientInstance)
 		
@@ -40,7 +78,7 @@ class PatientController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'patient.label', default: 'Patient'), patientInstance.id])
-       redirect(action: "list")
+        redirect(action: "edit", id: patientInstance.id)
     }
 
     def show(Long id) {
@@ -89,6 +127,7 @@ class PatientController {
         }
 
         patientInstance.properties = params
+		patientInstance.setDateNaissance(computeDate(params))
 
         if (patientInstance.save(flush: true)) {
 			render(template:'formremote', 
@@ -97,7 +136,7 @@ class PatientController {
 			render(ContentType:'text/plain', text: patientInstance.errors)
         }
     }
-
+	
     def delete(Long id) {
         def patientInstance = Patient.get(id)
         if (!patientInstance) {
@@ -126,4 +165,18 @@ class PatientController {
 		def user = springSecurityService.currentUser
 		patientInstance.setUtilisateur(user)
 	}
+	
+	/**
+	 * 
+	 * @param params
+	 * @return
+	 */
+	private Date computeDate(Map<Object, Object> params){
+		String naissance = params.datenaissance
+		SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyy")
+		Date dateNaissance = df1.parse(naissance)
+
+		return dateNaissance
+	}
+
 }

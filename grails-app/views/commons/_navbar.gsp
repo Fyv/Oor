@@ -2,7 +2,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="brand">WebOstéo</a>
+			<a href="${createLink(uri: '/')}" class="brand">[Oor]</a>
 			<ul class="nav">
 				<li
 					<%= request.forwardURI == "${createLink(uri: '/')}" ? ' class="active"' : '' %>><a
@@ -12,7 +12,8 @@
 					<!-- TODO gérer les liens actifs --> <a class="dropdown-toggle"
 					data-toggle="dropdown" href="#menu1">Patients<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"> Recherche </a></li>
+						<li><g:link url="[action:'search',controller:'patient']">Recherche </g:link>
+						</li>
 						<li><g:link url="[action:'create',controller:'patient']">Nouveau </g:link>
 						</li>
 						<li><g:link url="[action:'list',controller:'patient']">Liste </g:link>
@@ -39,7 +40,10 @@
 						<li><a href="#"> Todo </a></li>
 					</ul></li>
 				--%>
-				<li><a href="${createLink(uri: '/about')}">À propos</a></li>
+				<li
+					<%= request.forwardURI == "${createLink(uri: '/about')}" ? ' class="active"' : '' %>>
+					<a href="${createLink(uri: '/about')}">À propos</a>
+				</li>
 			</ul>
 			<ul class="nav pull-right">
 				<sec:ifLoggedIn>
@@ -49,7 +53,8 @@
 					</a>
 						<ul class="dropdown-menu">
 
-							<li><g:link url="[action:'preferences',controller:'utilisateur']">Preferences </g:link></li>
+							<li><g:link
+									url="[action:'preferences',controller:'utilisateur']">Preferences </g:link></li>
 							<li><g:link controller="logout">Déconnexion </g:link></li>
 						</ul></li>
 

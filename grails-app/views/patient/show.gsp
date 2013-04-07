@@ -271,17 +271,6 @@
 
 					</g:if>
 
-					<g:if test="${patientInstance?.famille}">
-						<dt>
-							<g:message code="patient.famille.label" default="Famille" />
-						</dt>
-
-						<dd>
-							<g:fieldValue bean="${patientInstance}" field="famille" />
-						</dd>
-
-					</g:if>
-
 					<g:if test="${patientInstance?.loisir}">
 						<dt>
 							<g:message code="patient.loisir.label" default="Loisir" />

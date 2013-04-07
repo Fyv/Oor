@@ -69,38 +69,63 @@ environments {
     }
 }
 
-// log4j configuration
-log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+def catalinaBase = System.properties.getProperty('catalina.base')
+if (!catalinaBase) catalinaBase = '.'   // just in case
+def logDirectory = "${catalinaBase}/logs"
+def appName = "Oor"
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
-		   
-//    warn   'org.mortbay.log'
-//		   
-//    debug  'grails.app'
-//		   
-//    root {
-//	  error 'stdout'
-//	  info 'stdout'
-//	  warn 'stdout'
-//	  debug 'stdout'
-//	  additivity = true
+log4j = { root ->
+	appenders {
+		rollingFile name:'stdout', file:"${logDirectory}/${appName}.log".toString(),  maxFileSize:'100MB'
+		rollingFile name:'stacktrace', file:"${logDirectory}/${appName}_stack.log".toString(), maxFileSize:'100MB'
+	 }
+
+	 error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+			'org.codehaus.groovy.grails.web.pages', //  GSP
+			'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+			'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+			'org.codehaus.groovy.grails.web.mapping', // URL mapping
+			'org.codehaus.groovy.grails.commons', // core / classloading
+			'org.codehaus.groovy.grails.plugins', // plugins
+			'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+			'org.springframework',
+			'org.hibernate'
+	 root.level = org.apache.log4j.Level.WARN
+ }
+
+//// log4j configuration
+//log4j = {
+//    // Example of changing the log pattern for the default console appender:
+//    //
+//    appenders {
+//    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+////	rollingFile name: "stacktrace", maxFileSize: 1024, file: "/var/log/oor-stacktrace.log"
 //    }
-}
+//
+//    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
+//           'org.codehaus.groovy.grails.web.pages',          // GSP
+//           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+//           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+//           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+//           'org.codehaus.groovy.grails.commons',            // core / classloading
+//           'org.codehaus.groovy.grails.plugins',            // plugins
+//           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+//           'org.springframework',
+//           'org.hibernate',
+//           'net.sf.ehcache.hibernate'
+//		   
+////    warn   'org.mortbay.log'
+////		   
+////    debug  'grails.app'
+////		   
+////    root {
+////	  error 'stdout'
+////	  info 'stdout'
+////	  warn 'stdout'
+////	  debug 'stdout'
+////	  additivity = true
+////    }
+//}
 
 //
 grails.plugins.twitterbootstrap.fixtaglib = true

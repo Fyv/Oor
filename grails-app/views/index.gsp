@@ -34,7 +34,7 @@
 					<h2>Connectez-vous</h2>
 					<h4>Cliquez, un login, mot de passe, c'est parti</h4>
 					<p>C'est simple, gratuit et ça n'a pas finis d'évoluer</p>
-					<a href="/login" class="btn btn-primary">Login !</a>
+					<g:link url="[action:'auth',controller:'Login']" class="btn btn-primary">Connexion </g:link>
 				</div>
 				<div class="span3">
 					<h2>Parlez-en !</h2>

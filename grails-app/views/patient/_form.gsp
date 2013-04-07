@@ -119,8 +119,11 @@
 					class="required-indicator">*</span>
 				</label>
 				<div class="controls">
-					<g:datePicker name="dateNaissance" precision="day" class="span2"
-						value="${patientInstance?.dateNaissance}" />
+					<%--<g:datePicker name="dateNaissance" precision="day" class="span2"
+						value="${patientInstance?.dateNaissance}" />--%>
+
+					<input type="datetime" class="span10" value="<g:formatDate format="dd/MM/yyyy" date="${patientInstance?.dateNaissance}"/>" id="dp1" name="datenaissance" placeholder="ex: 01/01/1970">
+					
 				</div>
 			</div>
 		</div>
@@ -190,7 +193,7 @@
 		<div
 			class="fieldcontain ${hasErrors(bean: patientInstance, field: 'complementaire', 'error')} ">
 			<label for="complementaire"> <g:message
-					code="patient.complementaire.label" default="Complementaire" />
+					code="patient.complementaire.label" default="Examens complémentaires / Musculosquelettique" />
 
 			</label>
 			<g:textArea name="complementaire"
@@ -203,9 +206,18 @@
 
 			</label>
 			<g:textArea name="medical" value="${patientInstance?.medical}"
-				class="field span10" />
+				class="field span10" rows="5" />
 		</div>
 
+		<div
+			class="fieldcontain ${hasErrors(bean: patientInstance, field: 'grossesse', 'error')} ">
+			<label for="grossesse"> <g:message
+					code="patient.grossesse.label" default="Grossesse(s)" />
+
+			</label>
+			<g:textArea name="grossesse" value="${patientInstance?.grossesse}"
+				class="field span10" />
+		</div>
 		<div
 			class="fieldcontain ${hasErrors(bean: patientInstance, field: 'traitement', 'error')} ">
 			<label for="traitement"> <g:message
@@ -242,8 +254,15 @@
 
 			</label>
 			<g:textArea name="remarque" value="${patientInstance?.remarque}"
-				class="field span10" />
+				class="field span10" rows="1" />
 		</div>
 
-	</div>
+	</div>				
 </div>
+<script>
+$(function(){
+	$('#dp1').datepicker({
+		format:'dd/mm/yyyy'
+	});
+})
+</script>
