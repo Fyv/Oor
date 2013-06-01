@@ -29,6 +29,7 @@ class Patient {
 	String grossesse
 	Genre sexe
 	Civilite civilite
+	Localite localite
 	
 	Date dateCreated
 	Date lastUpdated
@@ -36,7 +37,7 @@ class Patient {
 	
 	static hasMany = [consultations:Consultation]
 	
-	static belongsTo = [utilisateur:Utilisateur]
+	static belongsTo = [utilisateur:Utilisateur, cabinet:Cabinet]
 	
 	static mapping = {
 		consultations cascade: 'all-delete-orphan'
@@ -68,18 +69,27 @@ class Patient {
 		dateCreated(unique:false, nullable:false, display:false)
 		lastUpdated(unique:false, nullable:true, display:false)
 		consultations(display:false)
+		cabinet(display:false, nullable:true)
 		posturologie(nullable:true)
 		traitement(nullable:true)
 		grossesse(nullable:true)
+		localite(nullable:true)
     }
 	
+	static List<Patient> findAllByCabinet(Utilisateur utilisateur, Cabinet cabinet, Map namedParams){
+		Patient.findAll("from Patient as p where p.utilisateur= :u And p.cabinet= :cabinet order by p.nom Asc",
+			[u: utilisateur, cabinet: cabinet], namedParams)
+	}
+	
 	static List<Patient> findAllByUtilisateur(Utilisateur utilisateur, Map namedParams){
-		Patient.findAll("from Patient as p where p.utilisateur=? order by p.dateCreated Asc",
-			[utilisateur], namedParams)
+		Patient.findAll("from Patient as p where p.utilisateur= :u  order by p.nom Asc", 
+			[u: utilisateur],
+			namedParams)
+		
 	}
 	
 	static List<Patient> findAllLikeByUtilisateur(Utilisateur utilisateur, String searchValue, Map namedParams){
-		Patient.findAll("from Patient as p where (p.nom like :search or p.prenom like :search) And  p.utilisateur= :user  order by p.dateCreated Asc",
+		Patient.findAll("from Patient as p where (p.nom like :search or p.prenom like :search) And  p.utilisateur= :user  order by p.nom Asc",
 						[search: searchValue, user: utilisateur], namedParams)
 	}
 }

@@ -14,9 +14,7 @@
 
 		<div class="span9">
 			<div class="page-header">
-				<h1>
-					Edition préférences utilisateur
-				</h1>
+				<h1>Edition préférences utilisateur</h1>
 			</div>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">
@@ -33,7 +31,23 @@
 				</ul>
 			</g:hasErrors>
 			<div id="updateUtilisateur">
-				<g:render template="formremote"></g:render>		
+				<g:render template="formremote"></g:render>
+			</div>
+
+			<div class="page-header">
+				<h3>
+					Création de cabinet ostéopathique <small>Partage et
+						visualisation de patients</small>
+				</h3>
+				<p>
+					La création d'un cabinet sur [Oor] vous permettra d'associer vos
+					patients à vos différents cabinet et de rajouter vos collègues à
+					votre cabinet. <br /> Ainsi, vous pourrez visualiser et partager
+					des informations avec vos collègues.
+			</div>
+
+			<div id="updateCabinet" class="row">
+					<g:render template="../cabinet/formremote" />
 			</div>
 		</div>
 	</div>

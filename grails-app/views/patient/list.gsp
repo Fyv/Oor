@@ -10,9 +10,9 @@
 </head>
 <body>
 	<div class="row-fluid">
-	
-	<g:render template="leftMenu" />
-	
+
+		<g:render template="leftMenu" />
+
 		<div class="span9">
 			<div class="page-header">
 				<h1>
@@ -24,9 +24,10 @@
 					${flash.message}
 				</div>
 			</g:if>
-			
-			<g:render template="listpatients" />
-			
+
+			<div id="updateList">
+				<g:render template="listpatients" />
+			</div>
 		</div>
 	</div>
 </body>

@@ -6,6 +6,19 @@
 <div class="tab-content">
 
 	<div class="tab-pane active" id="info">
+	
+	<g:if test="${cabinetInstanceList != null && !cabinetInstanceList.isEmpty()}">
+		<div class="control-group">
+			<label class="control-label" for="cabinet"> Cabinet
+			</label>
+			<div class="controls">
+				<g:select name="cab" 
+					from="${cabinetInstanceList?.nom}"
+					keys="${cabinetInstanceList?.id}"  
+					value="${patientInstance?.cabinet?.id }"/>
+			</div>
+		</div>
+	</g:if>
 		<div class="control-group">
 			<div
 				class="fieldcontain ${hasErrors(bean: patientInstance, field: 'civilite', 'error')} required">
@@ -74,6 +87,10 @@
 				</div>
 			</div>
 		</div>
+
+		<g:render template="/commons/localite" />
+
+
 		<div class="control-group">
 			<div
 				class="fieldcontain ${hasErrors(bean: patientInstance, field: 'email', 'error')} ">
@@ -122,8 +139,10 @@
 					<%--<g:datePicker name="dateNaissance" precision="day" class="span2"
 						value="${patientInstance?.dateNaissance}" />--%>
 
-					<input type="datetime" class="span10" value="<g:formatDate format="dd/MM/yyyy" date="${patientInstance?.dateNaissance}"/>" id="dp1" name="datenaissance" placeholder="ex: 01/01/1970">
-					
+					<input type="datetime" class="span10"
+						value="<g:formatDate format="dd/MM/yyyy" date="${patientInstance?.dateNaissance}"/>"
+						id="dp1" name="datenaissance" placeholder="ex: 01/01/1970">
+
 				</div>
 			</div>
 		</div>
@@ -193,7 +212,8 @@
 		<div
 			class="fieldcontain ${hasErrors(bean: patientInstance, field: 'complementaire', 'error')} ">
 			<label for="complementaire"> <g:message
-					code="patient.complementaire.label" default="Examens complémentaires / Musculosquelettique" />
+					code="patient.complementaire.label"
+					default="Examens complémentaires / Musculosquelettique" />
 
 			</label>
 			<g:textArea name="complementaire"
@@ -257,12 +277,12 @@
 				class="field span10" rows="1" />
 		</div>
 
-	</div>				
+	</div>
 </div>
 <script>
-$(function(){
-	$('#dp1').datepicker({
-		format:'dd/mm/yyyy'
-	});
-})
+	$(function() {
+		$('#dp1').datepicker({
+			format : 'dd/mm/yyyy'
+		});
+	})
 </script>

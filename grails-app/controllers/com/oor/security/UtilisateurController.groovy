@@ -4,6 +4,8 @@ import grails.plugins.springsecurity.Secured
 
 import org.springframework.dao.DataIntegrityViolationException
 
+import com.oor.core.Cabinet
+
 class UtilisateurController {
 	
 	def springSecurityService
@@ -142,13 +144,17 @@ class UtilisateurController {
 			case 'GET':
 			utilisateurInstance = springSecurityService.currentUser
 				def roleInstanceList = Role.findAll()
+				def cabinets = Cabinet.findAllInvolve(utilisateurInstance)
+				
 				if (!utilisateurInstance) {
 					flash.message = message(code: 'default.not.found.message', args: [message(code: 'utilisateur.label', default: 'Utilisateur'), id])
 					redirect(action: "list")
 					return
 				}
 		
-				[utilisateurInstance: utilisateurInstance, roleInstanceList: roleInstanceList]
+				[utilisateurInstance: utilisateurInstance, 
+					roleInstanceList: roleInstanceList,
+					cabinetInstanceAll: cabinets]
 				break
 			
 			case 'POST':
@@ -174,7 +180,9 @@ class UtilisateurController {
 				
 						if (utilisateurInstance.save(flush: true)) {
 							render(template:'formremote',
-								model: [utilisateurInstance: utilisateurInstance, isUpdated: true])
+								model: [utilisateurInstance: utilisateurInstance, ,
+										cabinetInstanceAll: Cabinet.findAllInvolve(utilisateurInstance),
+										isUpdated: true])
 						} else {
 							render(ContentType:'text/plain', text: utilisateurInstance.errors)
 						}

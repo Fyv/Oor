@@ -24,6 +24,23 @@
 							value="Search"></g:actionSubmit>
 					</div>
 				</g:form></li>
+
+			<g:if
+				test="${request.getRequestURI().contains('/list') && (cabinetInstanceList != null && !cabinetInstanceList.isEmpty())}">
+				<li class="nav-header">Cabinet</li>
+
+				<g:select 
+				onchange="${remoteFunction(action: 'list',
+					update: 'updateList',
+                       params: '\'cabinet.id=\' + this.value', 
+                       options: '[asynchronous: false]')}"
+				name="cabinet" 
+				from="${cabinetInstanceList?.nom}"
+				keys="${cabinetInstanceList?.id}"
+				noSelection="['':'- Sélection -']" 
+				/>
+			</g:if>
+
 		</ul>
 	</div>
 </div>

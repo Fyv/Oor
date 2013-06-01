@@ -25,6 +25,7 @@
 <r:layoutResources />
 <g:javascript src="application.js" />
 <g:javascript src="jquery.js" />
+<g:javascript src="jquery.jgrowl.js" />
 <g:javascript src="bootstrap-datepicker.js"/>
 <g:javascript src="bootstrap.js" />
 <g:javascript library="prototype" />

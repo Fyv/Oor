@@ -20,11 +20,28 @@ class PatientController {
     }
 
     def list(Integer max) {
+		def patientInstanceList
+		def patientInstanceTotal
         params.max = Math.min(max ?: 20, 100)
 		
-		def patientInstanceList = Patient.findAllByUtilisateur(springSecurityService.currentUser, params)
-		
-        [patientInstanceList: patientInstanceList, patientInstanceTotal: Patient.countByUtilisateur(springSecurityService.currentUser, params)]
+		if(params.cabinet != null)  {
+			def Cabinet = Cabinet.get(params.cabinet.id)
+			patientInstanceList = Patient.findAllByCabinet(springSecurityService.currentUser, Cabinet, params)
+			patientInstanceTotal = Patient.countByUtilisateurAndCabinet(springSecurityService.currentUser, Cabinet, params)
+			
+			render(template:'listpatients',
+				model: [patientInstanceList: patientInstanceList, 
+			cabinetInstanceList: Cabinet.findAllInvolve(springSecurityService.currentUser),
+			patientInstanceTotal: patientInstanceTotal])
+			
+		} else {
+			patientInstanceList = Patient.findAllByUtilisateur(springSecurityService.currentUser, params)
+			patientInstanceTotal = Patient.countByUtilisateur(springSecurityService.currentUser, params)
+		}	
+			
+        [patientInstanceList: patientInstanceList, 
+			cabinetInstanceList: Cabinet.findAllInvolve(springSecurityService.currentUser),
+			patientInstanceTotal: patientInstanceTotal]
     }
     
 	def search(Integer max, String searchValue) {
@@ -43,8 +60,8 @@ class PatientController {
 				def criteria = new DetachedCriteria(Patient)
 				def query = criteria.build {
 					or {
-						like("nom", searchQuery)
-						like("prenom", searchQuery)
+						like("nom".toLowerCase(), searchQuery.toLowerCase())
+						like("prenom".toLowerCase(), searchQuery.toLowerCase())
 					}
 					eq("utilisateur", springSecurityService.currentUser)
 				}
@@ -69,6 +86,7 @@ class PatientController {
 		
 		patientInstance.setDateCreated(new Date())
 		patientInstance.setDateNaissance(computeDate(params))
+		patientInstance.localite = Localite.get(params.localiteId)
 		
 		assignUser(patientInstance)
 		
@@ -89,7 +107,7 @@ class PatientController {
             return
         }
 
-        [patientInstance: patientInstance]
+        [patientInstance: patientInstance, localiteInstance: patientInstance.localite]
     }
 
     def edit(Long id, Integer max) {
@@ -97,6 +115,8 @@ class PatientController {
 		
 		def patientInstance = Patient.get(id)
 		def consultationInstanceList = Consultation.findAllByPatient(patientInstance, params)
+		def cabinetInstanceList = Cabinet.findAllInvolve(springSecurityService.currentUser)
+		
 		
         if (!patientInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'patient.label', default: 'Patient'), id])
@@ -104,7 +124,11 @@ class PatientController {
             return
         }
 
-        [patientInstance: patientInstance, consultationInstanceList: consultationInstanceList, consultationInstanceTotal: Consultation.countByPatient(patientInstance, params)]
+        [patientInstance: patientInstance, 
+			consultationInstanceList: consultationInstanceList, 
+			consultationInstanceTotal: Consultation.countByPatient(patientInstance, params),
+			localiteInstance: patientInstance.localite, 
+			cabinetInstanceList: cabinetInstanceList]
     }
 
     def update(Long id, Long version) {
@@ -128,10 +152,15 @@ class PatientController {
 
         patientInstance.properties = params
 		patientInstance.setDateNaissance(computeDate(params))
+		patientInstance.localite = Localite.get(params.localiteId)
+		patientInstance.cabinet = Cabinet.get(params.cab)
 
         if (patientInstance.save(flush: true)) {
 			render(template:'formremote', 
-				model: [patientInstance: patientInstance, isUpdated: true])
+				model: [patientInstance: patientInstance, 
+					localiteInstance: patientInstance.localite, 
+					cabinetInstanceList: Cabinet.findAllInvolve(springSecurityService.currentUser),
+					isUpdated: true])
         } else {
 			render(ContentType:'text/plain', text: patientInstance.errors)
         }
@@ -174,9 +203,13 @@ class PatientController {
 	private Date computeDate(Map<Object, Object> params){
 		String naissance = params.datenaissance
 		SimpleDateFormat df1 = new SimpleDateFormat("dd/MM/yyy")
-		Date dateNaissance = df1.parse(naissance)
-
-		return dateNaissance
+		
+		if(naissance.equals(null) || naissance.isEmpty()){
+			return new Date()
+		} else {
+			Date dateNaissance = df1.parse(naissance)
+			return dateNaissance
+		}
 	}
 
 }
